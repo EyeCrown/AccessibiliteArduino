@@ -9,19 +9,13 @@
  * 
  * Author: Théophile Carrasco
  */
-
-
-
-// TODO: Do the button that print a letter
-
-
-/**
- * 1st : move x-axis with potard
- * 2nd : valid with button
- * 3rd : move y-axis with potard
- * 4th : valid with button
- * 5th : spawn square to x, y coords
+ 
+ /**
+ * Imports
+ *
  */
+import processing.serial.*; 
+ 
  
  /**
  * Variables
@@ -41,6 +35,8 @@ int keyColor = #ffa825;   // font color
 
 String textToDisplay = ">";   // text to display
 
+Serial myPort;  // Create object from Serial class
+String valCurrent, valPrevious;     // Data received from the serial port
 
  /**
  * Methods
@@ -95,7 +91,7 @@ void keyPressed() {
  * with col as font color and bg as background color  
  */
 void addLetter() {
-  textToDisplay += str('A' + cursorId);
+  textToDisplay += char('A' + cursorId);
 }
 
 

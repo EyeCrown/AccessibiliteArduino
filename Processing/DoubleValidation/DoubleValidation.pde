@@ -79,15 +79,6 @@ void draw() {
   
   if ( myPort.available() > 0) {  // If data is available,
     valCurrent = myPort.readStringUntil('\n');    // read it and store it in val
-    text(valCurrent, 200, 25);
-    valCurrent += " _";
-    String[] list = split(valCurrent, ' ');
-    print(list[0] + "  >" + list[1] + "< \n");
-    if (list[1] == "1\n")
-      valButton = 999;
-    println("B: " + valButton);
-    //println(valCurrent); //print it out in the console
-    
   }
   
   testValSerial();
@@ -103,6 +94,7 @@ void testValSerial() {
   
   text(valPotard, 500, 25);
   text(valButton, 600, 25);
+  
   if (abs(valPotard - lastValPotard) > ecart) { 
     if (moveHorizontal) {
       xCursorPos = valPotard;
@@ -112,7 +104,7 @@ void testValSerial() {
     lastValPotard = valPotard;
   }
   
-  if (nums[1] != 0) {
+  if (valButton != 0) {
     if (valButton != lastValButton) {
       text("Button pressed", 0, 20, 500, 100);
       if (moveHorizontal) {
