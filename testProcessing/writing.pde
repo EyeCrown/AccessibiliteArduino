@@ -2,6 +2,11 @@
  * --- Accessibility & Arduino ---
  *         Cnam-Enjmin P20        
  * 
+ * File: Writing
+ * Description: Keyboard where you 
+ * can change letter then validate
+ * and write a text
+ * 
  * Author: Théophile Carrasco
  */
 
