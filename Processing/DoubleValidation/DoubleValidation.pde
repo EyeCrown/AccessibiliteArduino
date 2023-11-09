@@ -20,6 +20,12 @@
  */
  
  /**
+ * Imports
+ *
+ */
+import processing.serial.*; 
+ 
+ /**
  * Variables
  *
  */
@@ -30,6 +36,10 @@ int xMin = 26, xMax = 1054;
 int yMin = 26, yMax = 514;
 
 boolean moveHorizontal;
+
+Serial myPort;  // Create object from Serial class
+String valCurrent, valPrevious;     // Data received from the serial port
+int ecart = 20;
 
  /**
  * Methods
@@ -49,6 +59,13 @@ void setup() {
   yCursorPos = height / 2;
   
   moveHorizontal = true;
+  
+  
+  String portName = Serial.list()[0]; //change the 0 to a 1 or 2 etc. to match your port
+  myPort = new Serial(this, portName, 9600);
+  
+  valCurrent = "";
+  valPrevious = valCurrent;
 }
 
 /** 
@@ -57,8 +74,39 @@ void setup() {
 void draw() {
   background(#2d3e41); 
   
+  if ( myPort.available() > 0) {  // If data is available,
+    valCurrent = myPort.readStringUntil('\n');         // read it and store it in val
+  }
+  
+  testValSerial();
+  
   drawCursor();
 }
+
+void testValSerial() {
+  int val = int(valCurrent); 
+  int lastVal = int(valPrevious);
+  
+  if (val >=0 && (lastVal - val > ecart || val - lastVal > ecart)) {
+    if (moveHorizontal) {
+      if (val < lastVal) {
+        moveCursorHorizontal(true);
+      } else {
+        moveCursorHorizontal(false);
+      }
+    } else {
+      if (val < lastVal) {
+        moveCursorVertical(true);
+      } else {
+        moveCursorVertical(false);
+      }
+    }
+  }
+}
+
+
+
+
 
 /** 
  * Every time a key is pressed
