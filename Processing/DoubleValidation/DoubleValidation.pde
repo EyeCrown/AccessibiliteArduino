@@ -39,7 +39,11 @@ boolean moveHorizontal;
 
 Serial myPort;  // Create object from Serial class
 String valCurrent, valPrevious;     // Data received from the serial port
-int ecart = 20;
+int ecart = 5;
+
+int valPotard = 0, lastValPotard = 0;
+int valButton = 0, lastValButton = 0;
+
 
  /**
  * Methods
@@ -60,11 +64,10 @@ void setup() {
   
   moveHorizontal = true;
   
-  
   String portName = Serial.list()[0]; //change the 0 to a 1 or 2 etc. to match your port
   myPort = new Serial(this, portName, 9600);
   
-  valCurrent = "";
+  valCurrent = "100 100";
   valPrevious = valCurrent;
 }
 
@@ -75,7 +78,16 @@ void draw() {
   background(#2d3e41); 
   
   if ( myPort.available() > 0) {  // If data is available,
-    valCurrent = myPort.readStringUntil('\n');         // read it and store it in val
+    valCurrent = myPort.readStringUntil('\n');    // read it and store it in val
+    text(valCurrent, 200, 25);
+    valCurrent += " _";
+    String[] list = split(valCurrent, ' ');
+    print(list[0] + "  >" + list[1] + "< \n");
+    if (list[1] == "1\n")
+      valButton = 999;
+    println("B: " + valButton);
+    //println(valCurrent); //print it out in the console
+    
   }
   
   testValSerial();
@@ -84,29 +96,40 @@ void draw() {
 }
 
 void testValSerial() {
-  int val = int(valCurrent); 
-  int lastVal = int(valPrevious);
+  int[] nums = int(split(valCurrent, ' '));
+  valPotard = int(nums[0]);
+  //println(nums[1]);
+  valButton = nums[1];
   
-  if (val >=0 && (lastVal - val > ecart || val - lastVal > ecart)) {
+  text(valPotard, 500, 25);
+  text(valButton, 600, 25);
+  if (abs(valPotard - lastValPotard) > ecart) { 
     if (moveHorizontal) {
-      if (val < lastVal) {
-        moveCursorHorizontal(true);
-      } else {
-        moveCursorHorizontal(false);
-      }
+      xCursorPos = valPotard;
     } else {
-      if (val < lastVal) {
-        moveCursorVertical(true);
+      yCursorPos = valPotard;
+    }    
+    lastValPotard = valPotard;
+  }
+  
+  if (nums[1] != 0) {
+    if (valButton != lastValButton) {
+      text("Button pressed", 0, 20, 500, 100);
+      if (moveHorizontal) {
+        moveHorizontal = false;
       } else {
-        moveCursorVertical(false);
+        fill(#ff0000);
+        circle(xCursorPos, yCursorPos, 50);
+        fill(#ffffff);
+        moveHorizontal = true;
       }
     }
+    
   }
+  
+  
 }
-
-
-
-
+ 
 
 /** 
  * Every time a key is pressed

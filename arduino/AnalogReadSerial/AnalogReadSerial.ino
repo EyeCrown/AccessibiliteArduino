@@ -1,23 +1,18 @@
+int valButton = 9999;
+int valPotard = 0;
+
 // the setup routine runs once when you press reset:
 void setup() {
   // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(2,INPUT);
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
-  // read the input on analog pin 0:
-  int sensorValue = analogRead(A0);
-  // print out the value you read:
-  Serial.println(sensorValue);
-  delay(1);  // delay in between reads for stability
+  valButton = digitalRead(2);
+  valPotard = analogRead(A0);
 
-
-  digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-  delay(sensorValue);                      // wait for a second
-  digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
-  delay(1000);                      // wait for a second
-
-
+  Serial.println(String(valPotard) + " " + String(valButton) + " _");
+  delay(16);  // delay in between reads for stability
 }
