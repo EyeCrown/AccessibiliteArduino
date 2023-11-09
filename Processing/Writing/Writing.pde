@@ -23,6 +23,11 @@
  * 5th : spawn square to x, y coords
  */
  
+ /**
+ * Variables
+ *
+ */
+ 
 int xKeyboardPos, yKeyboardPos;   // keyboard coordonates
 
 int xCursorPos, yCursorPos;       // cursor coordonates
@@ -33,6 +38,14 @@ int keyCharWidthOffset = 7, keyCharHeightOffset = -8;    // offset to center let
 
 int keyBG = #3e6785;      // background color
 int keyColor = #ffa825;   // font color
+
+String textToDisplay = ">";   // text to display
+
+
+ /**
+ * Methods
+ *
+ */
 
 /** 
  * Initialization
@@ -57,8 +70,7 @@ void setup() {
 void draw() {
   drawKeyBoard();
   drawCursor();
-  
-  // TODO: Do the button that print a letter
+  drawText(width/2 - 300, height/2);
 }
 
 /** 
@@ -69,8 +81,40 @@ void keyPressed() {
     moveCursorLeft();
   } else if (key == 'D' || key == 'd') {
     moveCursorRight();
-  }  
+  } else if (key == ' ') {
+    addLetter();
+  }
+  
 }
+
+
+/** 
+ * drawKey(int keyValue, int x, int y, int bg, int col)
+ * 
+ * Draw a char from keyValue inside a box at x, y coords 
+ * with col as font color and bg as background color  
+ */
+void addLetter() {
+  textToDisplay += str('A' + cursorId);
+}
+
+
+
+/** 
+ * drawKey(int keyValue, int x, int y, int bg, int col)
+ * 
+ * Draw a char from keyValue inside a box at x, y coords 
+ * with col as font color and bg as background color  
+ */
+void drawText(int x, int y) {
+  fill(keyColor);
+  text(textToDisplay, x, y, 1000, 1000);
+}
+
+
+
+
+
 
 /** 
  * drawKey(int keyValue, int x, int y, int bg, int col)
@@ -98,6 +142,9 @@ void drawKeyBoard() {
     l_x += keyBoxWidth + keyBoxOffset;
   }
 }
+
+
+
 
 /** 
  * drawCursor()
